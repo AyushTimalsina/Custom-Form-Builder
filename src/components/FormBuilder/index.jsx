@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Card, CardContent, Grid, Button } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Grid,
+  Button,
+  Switch,
+  Paper,
+  TextField,
+} from "@mui/material";
 import useCustomForm from "../../context/useCustomForm";
-import EditFieldDialog from "../EditFieldDialog";
 import { renderFormField } from "./FormField";
-
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 const FormBuilder = () => {
   const [
-    { items, formFields, formJson, showEditModal },
-    { setItems, setFormFields, setFormJson, setShowEditModal },
+    { items, formFields, formJson },
+    { setItems, setFormFields, setFormJson },
   ] = useCustomForm();
 
   const handleDragEnd = (result) => {
@@ -34,13 +43,72 @@ const FormBuilder = () => {
   const handleRemoveField = (fieldId) => {
     const updatedFields = formFields.filter((field) => field.id !== fieldId);
     setFormFields(updatedFields);
-    setShowEditModal(false);
   };
 
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Grid container spacing={2}>
+          <Grid item xs={10}>
+            <h3>Drop Here!!</h3>
+            <Droppable droppableId="drop-zone">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{
+                    height: "400px",
+                    border: "2px dashed #aaa",
+                    borderRadius: "4px",
+                    padding: "8px",
+                  }}
+                >
+                  {formFields.map((field, index) => (
+                    <div key={field.id}>
+                      <Paper elevation={3}>
+                        <div style={{ margin: 15 }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              marginBottom: "8px",
+                            }}
+                          >
+                            <DragIndicatorIcon />
+                            <div style={{ flexGrow: 1, textAlign: "left" }}>
+                              Heading
+                            </div>
+
+                            <div style={{ textAlign: "right" }}>
+                              <Button
+                                variant="text"
+                                color="inherit"
+                                size="small"
+                                style={{ marginLeft: "8px" }}
+                              >
+                                <ContentCopyIcon />
+                              </Button>
+                              <Button
+                                variant="text"
+                                color="inherit"
+                                size="small"
+                                onClick={() => handleRemoveField(field.id)}
+                              >
+                                <DeleteIcon />
+                              </Button>
+                              Required <Switch />
+                            </div>
+                          </div>
+                          {renderFormField(field)}
+                        </div>
+                      </Paper>
+                    </div>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </Grid>
           <Grid item xs={2}>
             <h3>Components</h3>
             <Droppable droppableId="form-builder">
@@ -69,55 +137,6 @@ const FormBuilder = () => {
               )}
             </Droppable>
           </Grid>
-          <Grid item xs={8}>
-            <h3>Drop Here!!</h3>
-            <Droppable droppableId="drop-zone">
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={{
-                    height: "400px",
-                    border: "2px dashed #aaa",
-                    borderRadius: "4px",
-                    padding: "8px",
-                  }}
-                >
-                  {formFields.map((field, index) => (
-                    <div
-                      key={field.id}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {renderFormField(field)}
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        onClick={() => handleRemoveField(field.id)}
-                        style={{ marginLeft: "8px" }}
-                      >
-                        x
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="info"
-                        size="small"
-                        onClick={() => setShowEditModal(true)}
-                        style={{ marginLeft: "8px" }}
-                      >
-                        edit
-                      </Button>
-                    </div>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </Grid>
         </Grid>
         <Button
           variant="contained"
@@ -132,10 +151,6 @@ const FormBuilder = () => {
             <pre>{formJson}</pre>
           </div>
         )}
-        <EditFieldDialog
-          open={showEditModal}
-          onClose={() => setShowEditModal(false)}
-        />
       </DragDropContext>
     </>
   );
