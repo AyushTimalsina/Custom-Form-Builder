@@ -7,9 +7,6 @@ const App = () => {
   return (
     <>
       <CustomFormProvider>
-        <Box align={"center"}>
-          <Button>Welcome to Form Builder</Button>
-        </Box>
         <FormBuilder />
       </CustomFormProvider>
     </>

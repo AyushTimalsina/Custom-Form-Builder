@@ -8,6 +8,9 @@ import {
   Switch,
   Paper,
   TextField,
+  Box,
+  Divider,
+  Typography,
 } from "@mui/material";
 import useCustomForm from "../../context/useCustomForm";
 import { renderFormField } from "./FormField";
@@ -16,10 +19,24 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 const FormBuilder = () => {
   const [
-    { items, formFields, formJson },
-    { setItems, setFormFields, setFormJson },
+    { isRequiredMap, title, items, formFields, description, formJson },
+    {
+      setIsRequiredMap,
+      setTitle,
+      setItems,
+      setDescription,
+      setFormFields,
+      setFormJson,
+    },
   ] = useCustomForm();
 
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
   const handleDragEnd = (result) => {
     if (!result.destination) return;
     const reorderedItems = Array.from(items);
@@ -35,11 +52,23 @@ const FormBuilder = () => {
   };
 
   const handleFormSubmit = () => {
-    const json = JSON.stringify(formFields);
+    const updatedFormFields = formFields.map((field) => ({
+      ...field,
+      isRequired: isRequiredMap[field.id],
+    }));
+
+    const updatedForm = {
+      id: "form-1",
+      title: title,
+      description: description,
+      name: "",
+      elements: updatedFormFields,
+    };
+
+    const json = JSON.stringify(updatedForm);
     console.log(json);
     setFormJson(json);
   };
-
   const handleRemoveField = (fieldId) => {
     const updatedFields = formFields.filter((field) => field.id !== fieldId);
     setFormFields(updatedFields);
@@ -50,7 +79,31 @@ const FormBuilder = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Grid container spacing={2}>
           <Grid item xs={10}>
-            <h3>Drop Here!!</h3>
+            <Paper>
+              <Box align={"center"} m={1}>
+                <Typography variant="h5">Form Heading</Typography>
+
+                <TextField
+                  label="Set Your Title"
+                  value={title}
+                  fullWidth
+                  onChange={handleTitleChange}
+                  variant="outlined"
+                  style={{ marginBottom: "8px" }}
+                />
+                <br />
+
+                <TextField
+                  label="Description"
+                  fullWidth
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  variant="outlined"
+                  style={{ marginBottom: "8px" }}
+                />
+              </Box>
+            </Paper>
+
             <Droppable droppableId="drop-zone">
               {(provided) => (
                 <div
@@ -76,7 +129,7 @@ const FormBuilder = () => {
                           >
                             <DragIndicatorIcon />
                             <div style={{ flexGrow: 1, textAlign: "left" }}>
-                              Heading
+                              <h3> Choose your own component</h3>
                             </div>
 
                             <div style={{ textAlign: "right" }}>
@@ -96,7 +149,16 @@ const FormBuilder = () => {
                               >
                                 <DeleteIcon />
                               </Button>
-                              Required <Switch />
+                              Required
+                              <Switch
+                                checked={isRequiredMap[field.id] || false}
+                                onChange={(event) =>
+                                  setIsRequiredMap((prevMap) => ({
+                                    ...prevMap,
+                                    [field.id]: event.target.checked,
+                                  }))
+                                }
+                              />
                             </div>
                           </div>
                           {renderFormField(field)}

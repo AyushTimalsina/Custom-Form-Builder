@@ -21,9 +21,9 @@ export const renderFormField = (field) => {
           variant="outlined"
           style={{ marginBottom: "8px" }}
         >
-          <MenuItem value="option1">Option 1</MenuItem>
-          <MenuItem value="option2">Option 2</MenuItem>
-          <MenuItem value="option3">Option 3</MenuItem>
+          <MenuItem value="option1">TextField</MenuItem>
+          <MenuItem value="option2">Dropdown</MenuItem>
+          <MenuItem value="option3">Number</MenuItem>
         </Select>
       );
     default:
