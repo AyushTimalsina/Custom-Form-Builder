@@ -1,30 +1,31 @@
-import { useState } from "react";
-import { INITIAL_ITEMS } from "../config/constant";
+// useStatesandActions.jsx
+import { useReducer } from "react";
+import { initialState, actionTypes, reducer } from "./useReducer";
 
 const useStatesandActions = () => {
-  const [items, setItems] = useState(INITIAL_ITEMS[0].elements);
-  const [isRequiredMap, setIsRequiredMap] = useState({});
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [formFields, setFormFields] = useState([]);
-  const [formJson, setFormJson] = useState("");
-
-  const state = {
-    items,
-    isRequiredMap,
-    title,
-    description,
-    formFields,
-    formJson,
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const actions = {
-    setItems,
-    setIsRequiredMap,
-    setTitle,
-    setDescription,
-    setFormFields,
-    setFormJson,
+    setItems: (items) =>
+      dispatch({ type: actionTypes.SET_ITEMS, payload: items }),
+    setIsRequiredMap: (isRequiredMap) =>
+      dispatch({
+        type: actionTypes.SET_IS_REQUIRED_MAP,
+        payload: isRequiredMap,
+      }),
+    setTitle: (title) =>
+      dispatch({ type: actionTypes.SET_TITLE, payload: title }),
+    setDescription: (description) =>
+      dispatch({ type: actionTypes.SET_DESCRIPTION, payload: description }),
+    setFormFields: (formFields) =>
+      dispatch({ type: actionTypes.SET_FORM_FIELDS, payload: formFields }),
+    setFormJson: (formJson) =>
+      dispatch({ type: actionTypes.SET_FORM_JSON, payload: formJson }),
+    toggleIsRequired: (fieldId, isRequired) =>
+      dispatch({
+        type: actionTypes.TOGGLE_IS_REQUIRED,
+        payload: { fieldId, isRequired },
+      }),
   };
 
   return [state, actions];

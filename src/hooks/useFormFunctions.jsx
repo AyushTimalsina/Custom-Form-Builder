@@ -3,7 +3,14 @@ import useCustomForm from "../context/useCustomForm";
 const useFormFunctions = () => {
   const [
     { isRequiredMap, title, items, formFields, description },
-    { setTitle, setItems, setDescription, setFormFields, setFormJson },
+    {
+      setTitle,
+      setItems,
+      setDescription,
+      setFormFields,
+      setFormJson,
+      toggleIsRequired,
+    },
   ] = useCustomForm();
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -48,12 +55,17 @@ const useFormFunctions = () => {
     const updatedFields = formFields.filter((field) => field.id !== fieldId);
     setFormFields(updatedFields);
   };
+
+  const handleToggleIsRequired = (fieldId) => {
+    toggleIsRequired(fieldId, !isRequiredMap[fieldId]);
+  };
   return {
     handleTitleChange,
     handleDescriptionChange,
     handleDragEnd,
     handleFormSubmit,
     handleRemoveField,
+    handleToggleIsRequired,
   };
 };
 
