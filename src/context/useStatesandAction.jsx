@@ -21,6 +21,7 @@ const useStatesandActions = () => {
       dispatch({ type: actionTypes.SET_FORM_FIELDS, payload: formFields }),
     setFormJson: (formJson) =>
       dispatch({ type: actionTypes.SET_FORM_JSON, payload: formJson }),
+    incrementCounter: () => dispatch({ type: actionTypes.INCREMENT_COUNTER }),
     toggleIsRequired: (fieldId, isRequired) =>
       dispatch({
         type: actionTypes.TOGGLE_IS_REQUIRED,

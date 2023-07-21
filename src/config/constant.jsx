@@ -1,3 +1,9 @@
+let counter = 0;
+
+const generateUniqueId = () => {
+  counter++;
+  return `item-${counter}`;
+};
 export const INITIAL_ITEMS = [
   {
     id: "form-1",
@@ -6,19 +12,29 @@ export const INITIAL_ITEMS = [
     name: "",
     elements: [
       {
-        id: "item-1",
+        id: generateUniqueId(),
         type: "text",
-        label: "Untitled Question",
+        label: "TextField",
         isRequired: false,
       },
-      { id: "item-2", type: "select", label: "Select", isRequired: false },
       {
-        id: "item-3",
+        id: generateUniqueId(),
+        type: "select",
+        label: "Select",
+        isRequired: false,
+      },
+      {
+        id: generateUniqueId(),
         type: "number",
         label: "Number",
         isRequired: false,
       },
-      { id: "item-4", type: "radio", label: "Radio Button", isRequired: false },
+      {
+        id: generateUniqueId(),
+        type: "radio",
+        label: "Radio Button",
+        isRequired: false,
+      },
     ],
   },
 ];

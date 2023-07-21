@@ -2,7 +2,7 @@ import useCustomForm from "../context/useCustomForm";
 
 const useFormFunctions = () => {
   const [
-    { isRequiredMap, title, items, formFields, description },
+    { counter, isRequiredMap, title, items, formFields, description },
     {
       setTitle,
       setItems,
@@ -10,6 +10,7 @@ const useFormFunctions = () => {
       setFormFields,
       setFormJson,
       toggleIsRequired,
+      incrementCounter,
     },
   ] = useCustomForm();
   const handleTitleChange = (event) => {
@@ -59,6 +60,20 @@ const useFormFunctions = () => {
   const handleToggleIsRequired = (fieldId) => {
     toggleIsRequired(fieldId, !isRequiredMap[fieldId]);
   };
+
+  const handleDuplicateField = (fieldId) => {
+    const fieldToDuplicate = formFields.find((field) => field.id === fieldId);
+    if (fieldToDuplicate) {
+      const duplicatedField = { ...fieldToDuplicate, id: generateUniqueId() };
+      setFormFields([...formFields, duplicatedField]);
+    }
+  };
+
+  const generateUniqueId = () => {
+    const newId = `item-${counter + 1}`;
+    incrementCounter();
+    return newId;
+  };
   return {
     handleTitleChange,
     handleDescriptionChange,
@@ -66,6 +81,8 @@ const useFormFunctions = () => {
     handleFormSubmit,
     handleRemoveField,
     handleToggleIsRequired,
+    handleDuplicateField,
+    generateUniqueId,
   };
 };
 

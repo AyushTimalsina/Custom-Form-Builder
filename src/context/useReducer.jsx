@@ -7,6 +7,7 @@ const initialState = {
   description: "",
   formFields: [],
   formJson: "",
+  counter: 1,
 };
 
 const actionTypes = {
@@ -17,6 +18,7 @@ const actionTypes = {
   SET_FORM_FIELDS: "SET_FORM_FIELDS",
   SET_FORM_JSON: "SET_FORM_JSON",
   TOGGLE_IS_REQUIRED: "TOGGLE_IS_REQUIRED",
+  INCREMENT_COUNTER: "INCREMENT_COUNTER",
 };
 
 const reducer = (state, action) => {
@@ -39,6 +41,8 @@ const reducer = (state, action) => {
         ...state,
         isRequiredMap: { ...state.isRequiredMap, [fieldId]: isRequired },
       };
+    case actionTypes.INCREMENT_COUNTER:
+      return { ...state, counter: state.counter + 1 };
     default:
       return state;
   }

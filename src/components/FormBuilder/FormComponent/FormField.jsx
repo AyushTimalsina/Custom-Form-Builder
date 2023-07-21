@@ -9,10 +9,12 @@ import { Button, Switch, Paper } from "@mui/material";
 
 const FormField = () => {
   const [{ isRequiredMap, formFields }, {}] = useCustomForm();
-  const { handleRemoveField, handleToggleIsRequired } = useFormFunctions();
+  const { handleRemoveField, handleToggleIsRequired, handleDuplicateField } =
+    useFormFunctions();
+
   return (
     <>
-      {formFields.map((field, index) => (
+      {formFields.map((field) => (
         <div key={field.id}>
           <Paper elevation={3}>
             <div style={{ margin: 15 }}>
@@ -35,7 +37,9 @@ const FormField = () => {
                     size="small"
                     style={{ marginLeft: "8px" }}
                   >
-                    <ContentCopyIcon />
+                    <ContentCopyIcon
+                      onClick={() => handleDuplicateField(field.id)}
+                    />
                   </Button>
                   <Button
                     variant="text"
