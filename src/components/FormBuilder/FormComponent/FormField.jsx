@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import useCustomForm from "../../../context/useCustomForm";
 import useFormFunctions from "../../../hooks/useFormFunctions";
-import { renderFormField } from "../RenderField";
+import RenderFormField from "../RenderField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Button, Switch, Paper } from "@mui/material";
 
 const FormField = () => {
-  const [{ isRequiredMap, formFields }, {}] = useCustomForm();
+  const [{ isRequiredMap, formFields, label }, { setLabel }] = useCustomForm();
   const { handleRemoveField, handleToggleIsRequired, handleDuplicateField } =
     useFormFunctions();
 
@@ -56,7 +56,7 @@ const FormField = () => {
                   />
                 </div>
               </div>
-              {renderFormField(field)}
+              <RenderFormField field={field} />
             </div>
           </Paper>
         </div>

@@ -1,8 +1,6 @@
-let counter = 0;
-
 const generateUniqueId = () => {
-  counter++;
-  return `item-${counter}`;
+  const id = self.crypto.randomUUID();
+  return `item-${id}`;
 };
 export const INITIAL_ITEMS = [
   {
@@ -10,10 +8,12 @@ export const INITIAL_ITEMS = [
     title: "Forms",
     description: "Dynamic form generator",
     name: "",
+    version: "1.0.5",
     elements: [
       {
         id: generateUniqueId(),
         type: "text",
+        name: "name",
         label: "TextField",
         isRequired: false,
       },

@@ -8,8 +8,10 @@ import {
   RadioGroup,
   FormControlLabel,
 } from "@mui/material";
+import useCustomForm from "../../context/useCustomForm";
 
-export const renderFormField = (field) => {
+const RenderFormField = ({ field }) => {
+  const [{ label }, { setLabel }] = useCustomForm();
   switch (field.type) {
     case "text":
       return (
@@ -19,6 +21,8 @@ export const renderFormField = (field) => {
             fullWidth
             variant="filled"
             placeholder="Enter Your Question"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
           />
           <TextField
             placeholder="short answer text"
@@ -87,3 +91,5 @@ export const renderFormField = (field) => {
       return null;
   }
 };
+
+export default RenderFormField;

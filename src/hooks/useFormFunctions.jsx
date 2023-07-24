@@ -2,7 +2,7 @@ import useCustomForm from "../context/useCustomForm";
 
 const useFormFunctions = () => {
   const [
-    { counter, isRequiredMap, title, items, formFields, description },
+    { isRequiredMap, title, items, formFields, description, version, label },
     {
       setTitle,
       setItems,
@@ -10,16 +10,10 @@ const useFormFunctions = () => {
       setFormFields,
       setFormJson,
       toggleIsRequired,
-      incrementCounter,
     },
   ] = useCustomForm();
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
 
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
+  // Drag and drop functionality
   const handleDragEnd = (result) => {
     if (!result.destination) return;
     const reorderedItems = Array.from(items);
@@ -33,10 +27,19 @@ const useFormFunctions = () => {
       setFormFields([...formFields, draggedItem]);
     }
   };
+  // To update title and description of Form
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
 
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+  // To update and submit the formfield
   const handleFormSubmit = () => {
     const updatedFormFields = formFields.map((field) => ({
       ...field,
+      label: label,
       isRequired: isRequiredMap[field.id],
     }));
 
@@ -45,6 +48,7 @@ const useFormFunctions = () => {
       title: title,
       description: description,
       name: "",
+      version: "1.0.0",
       elements: updatedFormFields,
     };
 
@@ -52,15 +56,18 @@ const useFormFunctions = () => {
     console.log(json);
     setFormJson(json);
   };
+
+  // To delete field
   const handleRemoveField = (fieldId) => {
     const updatedFields = formFields.filter((field) => field.id !== fieldId);
     setFormFields(updatedFields);
   };
-
+  // TO toggle switch  if the component is required or not
   const handleToggleIsRequired = (fieldId) => {
     toggleIsRequired(fieldId, !isRequiredMap[fieldId]);
   };
 
+  // To Duplicate the component
   const handleDuplicateField = (fieldId) => {
     const fieldToDuplicate = formFields.find((field) => field.id === fieldId);
     if (fieldToDuplicate) {
@@ -68,11 +75,10 @@ const useFormFunctions = () => {
       setFormFields([...formFields, duplicatedField]);
     }
   };
-
+  //To Generate unique Id
   const generateUniqueId = () => {
-    const newId = `item-${counter + 1}`;
-    incrementCounter();
-    return newId;
+    const id = self.crypto.randomUUID();
+    return `item-${id}`;
   };
   return {
     handleTitleChange,
