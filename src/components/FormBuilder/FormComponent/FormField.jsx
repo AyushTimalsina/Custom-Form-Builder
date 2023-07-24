@@ -8,7 +8,7 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Button, Switch, Paper } from "@mui/material";
 
 const FormField = () => {
-  const [{ isRequiredMap, formFields, label }, { setLabel }] = useCustomForm();
+  const [{ isRequiredMap, formFields }, {}] = useCustomForm();
   const { handleRemoveField, handleToggleIsRequired, handleDuplicateField } =
     useFormFunctions();
 
@@ -56,7 +56,7 @@ const FormField = () => {
                   />
                 </div>
               </div>
-              <RenderFormField field={field} />
+              <RenderFormField field={field} fieldId={field?.id} />
             </div>
           </Paper>
         </div>
