@@ -1,18 +1,27 @@
 import {
   TextField,
-  Select,
-  MenuItem,
   Radio,
   FormControl,
   FormLabel,
   RadioGroup,
   FormControlLabel,
+  Button,
 } from "@mui/material";
 import useCustomForm from "../../context/useCustomForm";
 
 const RenderFormField = ({ field }) => {
-  const [{ label }, { setLabel }] = useCustomForm();
-  switch (field.type) {
+  const [{ formFields }, { setLabel }] = useCustomForm();
+  const fieldData = formFields.find((f) => f.id === field.id);
+
+  if (!fieldData) return null;
+  const { label, type } = fieldData;
+  console.log(label);
+
+  const handleLabelChange = (e) => {
+    setLabel(field.id, e.target.value);
+  };
+
+  switch (type) {
     case "text":
       return (
         <>
@@ -22,7 +31,7 @@ const RenderFormField = ({ field }) => {
             variant="filled"
             placeholder="Enter Your Question"
             value={label}
-            onChange={(e) => setLabel(e.target.value)}
+            onChange={handleLabelChange}
           />
           <TextField
             placeholder="short answer text"
@@ -35,27 +44,35 @@ const RenderFormField = ({ field }) => {
 
     case "select":
       return (
-        <FormControl
-          fullWidth
-          variant="outlined"
-          style={{ marginBottom: "8px" }}
-        >
-          <Select key={field.id} label={field.label}>
-            <MenuItem value="option1">TextField</MenuItem>
-            <MenuItem value="option2">Dropdown</MenuItem>
-            <MenuItem value="option3">Number</MenuItem>
-          </Select>
-        </FormControl>
+        <>
+          <TextField
+            key={field.id}
+            fullWidth
+            variant="filled"
+            placeholder="Enter Your Question"
+            value={label}
+            onChange={handleLabelChange}
+          />
+          <li>
+            <TextField
+              placeholder=" option 1"
+              variant="standard"
+              style={{ marginBottom: "8px" }}
+            />
+            <Button variant="text">Add new field</Button>
+          </li>
+        </>
       );
 
     case "number":
       return (
         <TextField
           key={field.id}
-          label={field.label}
+          label={label}
           fullWidth
           variant="outlined"
           style={{ marginBottom: "8px" }}
+          onChange={handleLabelChange}
         />
       );
 
@@ -67,7 +84,12 @@ const RenderFormField = ({ field }) => {
           style={{ marginBottom: "8px" }}
         >
           <FormLabel component="legend">{field.label}</FormLabel>
-          <RadioGroup row aria-label={field.label}>
+          <RadioGroup
+            row
+            aria-label={field.label}
+            value={label}
+            onChange={handleLabelChange}
+          >
             <FormControlLabel
               value="option1"
               control={<Radio />}

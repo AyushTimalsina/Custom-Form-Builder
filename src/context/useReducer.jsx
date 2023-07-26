@@ -9,6 +9,8 @@ const initialState = {
   formJson: "",
   version: "1.0.0",
   label: "",
+
+  selectedOption: "",
 };
 
 const actionTypes = {
@@ -21,6 +23,7 @@ const actionTypes = {
   TOGGLE_IS_REQUIRED: "TOGGLE_IS_REQUIRED",
   SET_VERSION: "SET_VERSION",
   SET_LABEL: "SET_LABEL",
+  SET_SELECTED_OPTION: "SET_SELECTED_OPTION",
 };
 
 const reducer = (state, action) => {
@@ -46,7 +49,21 @@ const reducer = (state, action) => {
     case actionTypes.SET_VERSION:
       return { ...state, version: action.payload };
     case actionTypes.SET_LABEL:
-      return { ...state, label: action.payload };
+      const { id, label } = action.payload;
+      const fieldData = state.formFields.find((field) => field.id === id);
+      if (fieldData) {
+        return {
+          ...state,
+          formFields: state.formFields.map((field) =>
+            field.id === id ? { ...field, label } : field
+          ),
+        };
+      } else {
+        return state;
+      }
+
+    case actionTypes.SET_SELECTED_OPTION:
+      return { ...state, selectedOption: action.payload };
     default:
       return state;
   }

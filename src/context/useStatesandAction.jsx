@@ -26,13 +26,17 @@ const useStatesandActions = () => {
         type: actionTypes.TOGGLE_IS_REQUIRED,
         payload: { fieldId, isRequired },
       }),
-
     setVersion: (version) =>
       dispatch({ type: actionTypes.SET_VERSION, payload: version }),
-    setLabel: (label) =>
+    setLabel: (fieldId, label) =>
       dispatch({
         type: actionTypes.SET_LABEL,
-        payload: label,
+        payload: { id: fieldId, label },
+      }),
+    setSelectedOption: (selectedOption) =>
+      dispatch({
+        type: actionTypes.SET_SELECTED_OPTION,
+        payload: selectedOption,
       }),
   };
 

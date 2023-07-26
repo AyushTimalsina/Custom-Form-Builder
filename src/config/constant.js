@@ -2,6 +2,7 @@ const generateUniqueId = () => {
   const id = self.crypto.randomUUID();
   return `item-${id}`;
 };
+
 export const INITIAL_ITEMS = [
   {
     id: "form-1",
@@ -22,6 +23,13 @@ export const INITIAL_ITEMS = [
         type: "select",
         label: "Select",
         isRequired: false,
+        choice: [
+          {
+            id: generateUniqueId(),
+            value: "",
+            label: "",
+          },
+        ],
       },
       {
         id: generateUniqueId(),
@@ -34,6 +42,13 @@ export const INITIAL_ITEMS = [
         type: "radio",
         label: "Radio Button",
         isRequired: false,
+        choice: [
+          {
+            id: generateUniqueId(),
+            value: "",
+            label: "",
+          },
+        ],
       },
     ],
   },

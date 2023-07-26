@@ -2,7 +2,7 @@ import useCustomForm from "../context/useCustomForm";
 
 const useFormFunctions = () => {
   const [
-    { isRequiredMap, title, items, formFields, description, version, label },
+    { isRequiredMap, title, items, formFields, description },
     {
       setTitle,
       setItems,
@@ -39,7 +39,8 @@ const useFormFunctions = () => {
   const handleFormSubmit = () => {
     const updatedFormFields = formFields.map((field) => ({
       ...field,
-      label: label,
+
+      label: field.label,
       isRequired: isRequiredMap[field.id],
     }));
 

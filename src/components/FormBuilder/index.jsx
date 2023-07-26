@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Grid, Button } from "@mui/material";
 import useCustomForm from "../../context/useCustomForm";
@@ -17,14 +17,16 @@ const FormBuilder = () => {
         <Grid container spacing={2}>
           <Grid item xs={10}>
             <Droppable droppableId="drop-zone">
-              {(provided) => (
+              {(provided, snapshot) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   style={{
                     height: "auto",
-                    minHeight: "400px", // Set a minimum height
-                    border: "2px dashed #aaa",
+                    minHeight: "400px",
+                    border: snapshot.isDraggingOver
+                      ? "2px dashed #aaa"
+                      : "2px solid #aaa",
                     borderRadius: "4px",
                     padding: "8px",
                     overflowY: "auto",
@@ -33,6 +35,18 @@ const FormBuilder = () => {
                   <FormHeading />
                   <FormField />
                   {provided.placeholder}
+                  {snapshot.isDraggingOver ? (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        margin: "8px",
+                        border: "2px dashed #aaa",
+                        height: "50px",
+                      }}
+                    >
+                      Drop here
+                    </div>
+                  ) : null}
                 </div>
               )}
             </Droppable>

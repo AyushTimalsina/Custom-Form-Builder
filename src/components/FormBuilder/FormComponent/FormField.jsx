@@ -56,7 +56,7 @@ const FormField = () => {
                   />
                 </div>
               </div>
-              <RenderFormField field={field} fieldId={field?.id} />
+              <RenderFormField field={field} />
             </div>
           </Paper>
         </div>
