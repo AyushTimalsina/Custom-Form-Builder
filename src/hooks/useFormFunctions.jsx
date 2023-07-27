@@ -37,12 +37,41 @@ const useFormFunctions = () => {
   };
   // To update and submit the formfield
   const handleFormSubmit = () => {
-    const updatedFormFields = formFields.map((field) => ({
-      ...field,
+    const updatedFormFields = formFields.map((field) => {
+      const { type, choice, ...rest } = field;
+      let updatedField = { ...rest };
 
-      label: field.label,
-      isRequired: isRequiredMap[field.id],
-    }));
+      updatedField.label = field.label;
+      updatedField.type = field.type;
+
+      switch (type) {
+        case "select":
+          if (choice) {
+            updatedField.choice = choice.map((option) => ({
+              id: option.id,
+              type: option.type,
+              label: option.label,
+            }));
+          }
+          break;
+
+        case "radio":
+          if (choice) {
+            updatedField.choice = choice.map((option) => ({
+              id: option.id,
+              type: option.type,
+              label: option.label,
+            }));
+          }
+          break;
+
+        default:
+          break;
+      }
+
+      updatedField.isRequired = isRequiredMap[field.id];
+      return updatedField;
+    });
 
     const updatedForm = {
       id: "form-1",
@@ -58,7 +87,7 @@ const useFormFunctions = () => {
     setFormJson(json);
   };
 
-  // To delete field
+  // To delete  Whole field
   const handleRemoveField = (fieldId) => {
     const updatedFields = formFields.filter((field) => field.id !== fieldId);
     setFormFields(updatedFields);

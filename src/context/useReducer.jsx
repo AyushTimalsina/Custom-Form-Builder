@@ -1,16 +1,20 @@
 import { INITIAL_ITEMS } from "../config/constant";
 
+const initialFormFields = INITIAL_ITEMS[0].elements;
+const initialIsRequiredMap = initialFormFields.reduce((isRequired, field) => {
+  isRequired[field.id] = field.isRequired;
+  return isRequired;
+}, {});
+
 const initialState = {
-  items: INITIAL_ITEMS[0].elements,
-  isRequiredMap: {},
+  items: initialFormFields,
+  isRequiredMap: initialIsRequiredMap,
   title: "",
   description: "",
   formFields: [],
   formJson: "",
   version: "1.0.0",
   label: "",
-
-  selectedOption: "",
 };
 
 const actionTypes = {
@@ -23,7 +27,6 @@ const actionTypes = {
   TOGGLE_IS_REQUIRED: "TOGGLE_IS_REQUIRED",
   SET_VERSION: "SET_VERSION",
   SET_LABEL: "SET_LABEL",
-  SET_SELECTED_OPTION: "SET_SELECTED_OPTION",
 };
 
 const reducer = (state, action) => {
@@ -37,7 +40,8 @@ const reducer = (state, action) => {
     case actionTypes.SET_DESCRIPTION:
       return { ...state, description: action.payload };
     case actionTypes.SET_FORM_FIELDS:
-      return { ...state, formFields: action.payload };
+      const formFields = action.payload;
+      return { ...state, formFields };
     case actionTypes.SET_FORM_JSON:
       return { ...state, formJson: action.payload };
     case actionTypes.TOGGLE_IS_REQUIRED:
@@ -62,8 +66,6 @@ const reducer = (state, action) => {
         return state;
       }
 
-    case actionTypes.SET_SELECTED_OPTION:
-      return { ...state, selectedOption: action.payload };
     default:
       return state;
   }

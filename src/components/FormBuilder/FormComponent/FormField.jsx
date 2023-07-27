@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useCustomForm from "../../../context/useCustomForm";
 import useFormFunctions from "../../../hooks/useFormFunctions";
-import RenderFormField from "../RenderField";
+import RenderFormField from "../../RenderField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -56,7 +56,7 @@ const FormField = () => {
                   />
                 </div>
               </div>
-              <RenderFormField field={field} />
+              <RenderFormField field={field} choiceData={field.choice} />
             </div>
           </Paper>
         </div>

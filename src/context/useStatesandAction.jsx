@@ -33,11 +33,6 @@ const useStatesandActions = () => {
         type: actionTypes.SET_LABEL,
         payload: { id: fieldId, label },
       }),
-    setSelectedOption: (selectedOption) =>
-      dispatch({
-        type: actionTypes.SET_SELECTED_OPTION,
-        payload: selectedOption,
-      }),
   };
 
   return [state, actions];

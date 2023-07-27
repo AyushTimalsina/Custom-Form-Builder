@@ -26,6 +26,7 @@ export const INITIAL_ITEMS = [
         choice: [
           {
             id: generateUniqueId(),
+            type: "option",
             value: "",
             label: "",
           },
