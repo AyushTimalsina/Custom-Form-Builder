@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-const NumberFormField = ({ label, handleLabelChange, field }) => {
+const FileUploadField = ({ label, handleLabelChange, field }) => {
   return (
     <>
       <TextField
@@ -16,4 +16,4 @@ const NumberFormField = ({ label, handleLabelChange, field }) => {
   );
 };
 
-export default NumberFormField;
+export default FileUploadField;

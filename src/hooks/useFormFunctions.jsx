@@ -40,7 +40,6 @@ const useFormFunctions = () => {
     const updatedFormFields = formFields.map((field) => {
       const { type, choice, ...rest } = field;
       let updatedField = { ...rest };
-
       updatedField.label = field.label;
       updatedField.type = field.type;
 
@@ -81,9 +80,8 @@ const useFormFunctions = () => {
       version: "1.0.0",
       elements: updatedFormFields,
     };
-
+    console.log(updatedForm);
     const json = JSON.stringify(updatedForm);
-    console.log(json);
     setFormJson(json);
   };
 

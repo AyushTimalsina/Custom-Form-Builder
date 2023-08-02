@@ -1,7 +1,7 @@
 import React from "react";
 import useCustomForm from "../../context/useCustomForm";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { Card, CardContent } from "@mui/material";
+import { Box, Card, CardContent } from "@mui/material";
 const ComponentList = () => {
   const [{ items }, {}] = useCustomForm();
   return (
@@ -9,7 +9,7 @@ const ComponentList = () => {
       <h3>Components</h3>
       <Droppable droppableId="form-builder">
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <Box {...provided.droppableProps} ref={provided.innerRef}>
             {items.map((item, index) => (
               <Draggable key={item.id} draggableId={item.id} index={index}>
                 {(provided) => (
@@ -25,7 +25,7 @@ const ComponentList = () => {
               </Draggable>
             ))}
             {provided.placeholder}
-          </div>
+          </Box>
         )}
       </Droppable>
     </>

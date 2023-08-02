@@ -51,6 +51,18 @@ export const INITIAL_ITEMS = [
           },
         ],
       },
+      {
+        id: generateUniqueId(),
+        type: "date",
+        label: "Date",
+        isRequired: false,
+      },
+      {
+        id: generateUniqueId(),
+        type: "file-upload",
+        label: "File Upload",
+        isRequired: false,
+      },
     ],
   },
 ];

@@ -1,6 +1,6 @@
 import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Box } from "@mui/material";
 import useCustomForm from "../../context/useCustomForm";
 import useFormFunctions from "../../hooks/useFormFunctions";
 import FormHeading from "./FormComponent/FormHeading";
@@ -18,7 +18,7 @@ const FormBuilder = () => {
           <Grid item xs={10}>
             <Droppable droppableId="drop-zone">
               {(provided, snapshot) => (
-                <div
+                <Box
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   style={{
@@ -36,7 +36,7 @@ const FormBuilder = () => {
                   <FormField />
                   {provided.placeholder}
                   {snapshot.isDraggingOver ? (
-                    <div
+                    <Box
                       style={{
                         textAlign: "center",
                         margin: "8px",
@@ -45,9 +45,9 @@ const FormBuilder = () => {
                       }}
                     >
                       Drop here
-                    </div>
+                    </Box>
                   ) : null}
-                </div>
+                </Box>
               )}
             </Droppable>
           </Grid>
@@ -63,10 +63,10 @@ const FormBuilder = () => {
           Submit
         </Button>
         {formJson && (
-          <div style={{ marginTop: "16px" }}>
+          <Box style={{ marginTop: "16px" }}>
             <strong>Form JSON:</strong>
             <pre>{JSON.stringify(JSON.parse(formJson), null, 2)}</pre>
-          </div>
+          </Box>
         )}
       </DragDropContext>
     </>

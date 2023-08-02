@@ -5,7 +5,7 @@ import RenderFormField from "../../RenderField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { Button, Switch, Paper } from "@mui/material";
+import { Button, Switch, Paper, Box } from "@mui/material";
 
 const FormField = () => {
   const [{ isRequiredMap, formFields }, {}] = useCustomForm();
@@ -15,10 +15,10 @@ const FormField = () => {
   return (
     <>
       {formFields.map((field) => (
-        <div key={field.id}>
+        <Box key={field.id}>
           <Paper elevation={3}>
-            <div style={{ margin: 15 }}>
-              <div
+            <Box style={{ margin: 15 }}>
+              <Box
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -26,11 +26,11 @@ const FormField = () => {
                 }}
               >
                 <DragIndicatorIcon />
-                <div style={{ flexGrow: 1, textAlign: "left" }}>
-                  <h3> Choose your own component</h3>
-                </div>
+                <Box style={{ flexGrow: 1, textAlign: "left" }}>
+                  <h3>Enter title for your {field.type} </h3>
+                </Box>
 
-                <div style={{ textAlign: "right" }}>
+                <Box style={{ textAlign: "right" }}>
                   <Button
                     variant="text"
                     color="inherit"
@@ -54,12 +54,12 @@ const FormField = () => {
                     checked={isRequiredMap[field.id] || false}
                     onChange={() => handleToggleIsRequired(field.id)}
                   />
-                </div>
-              </div>
+                </Box>
+              </Box>
               <RenderFormField field={field} choiceData={field.choice} />
-            </div>
+            </Box>
           </Paper>
-        </div>
+        </Box>
       ))}
     </>
   );

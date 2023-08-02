@@ -5,6 +5,8 @@ import TextFormField from "./TextFormField";
 import SelectFormField from "./SelectFormField";
 import NumberFormField from "./NumberFormField";
 import RadioFormField from "./RadioFormField";
+import DateFormField from "./DateFormField";
+import UploadFormField from "./UploadFormField";
 
 const RenderFormField = ({ field, choiceData }) => {
   const [{ formFields }, { setLabel, setFormFields }] = useCustomForm();
@@ -17,7 +19,7 @@ const RenderFormField = ({ field, choiceData }) => {
   const handleLabelChange = (e) => {
     setLabel(field.id, e.target.value);
   };
-
+  console.log(field.id);
   const handleChoiceLabelChange = (choiceId, value) => {
     const updatedChoiceData = choiceData.map((option) =>
       option.id === choiceId ? { ...option, label: value } : option
@@ -113,6 +115,27 @@ const RenderFormField = ({ field, choiceData }) => {
             handleChoiceLabelChange={handleChoiceLabelChange}
             handleAddNewField={handleAddNewField}
             handleDeleteChoice={handleDeleteChoice}
+            field={field}
+          />
+        </>
+      );
+    case "date":
+      return (
+        <>
+          <DateFormField
+            label={label}
+            handleLabelChange={handleLabelChange}
+            field={field}
+          />
+        </>
+      );
+
+    case "file-upload":
+      return (
+        <>
+          <UploadFormField
+            label={label}
+            handleLabelChange={handleLabelChange}
             field={field}
           />
         </>
