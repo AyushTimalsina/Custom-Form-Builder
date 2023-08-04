@@ -9,22 +9,23 @@ import {
   DialogContent,
   DialogActions,
   Divider,
-  FormControl,
-  InputLabel,
   Select,
   MenuItem,
   TextField,
   FormControlLabel,
   Radio,
   RadioGroup,
+  Input,
 } from "@mui/material";
+import { DateField } from "@mui/x-date-pickers/DateField";
 import useCustomForm from "../../context/useCustomForm";
-import { DateRange, Error, UploadFile } from "@mui/icons-material";
-
+import { UploadFile } from "@mui/icons-material";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 const Index = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [{ formJson }, {}] = useCustomForm();
-
   const handleDialogOpen = () => {
     setDialogOpen(true);
   };
@@ -34,7 +35,7 @@ const Index = () => {
   };
   let formData = null;
   try {
-    formData = JSON.parse(formJson);
+    formData = formJson ? JSON.parse(formJson) : null;
   } catch (error) {
     console.error("Error parsing formJson:", error);
   }
@@ -48,7 +49,7 @@ const Index = () => {
         borderBottom="1px solid #ccc"
         mb={3}
       >
-        <Typography variant="h4">Custom Form Builder</Typography>
+        <h1>Custom Form Builder</h1>
         <Button variant="text" color="inherit" onClick={handleDialogOpen}>
           <VisibilityTwoToneIcon />
           View
@@ -58,113 +59,169 @@ const Index = () => {
       <Dialog
         open={isDialogOpen}
         onClose={handleDialogClose}
-        maxWidth="md"
+        maxWidth="lg"
         fullWidth
       >
         <DialogTitle>
-          <Typography variant="h5">
+          <Typography variant="h4">
             {formData?.title || "Untitled Form"}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
             {formData?.description || "Description"}
           </Typography>
         </DialogTitle>
+
         <Divider />
         {formData?.elements.length > 0 ? (
           <DialogContent>
-            <form>
-              {formData?.elements?.map((element) => {
-                switch (element?.type) {
-                  case "text":
-                    return (
-                      <Box fullWidth key={element.id} variant="outlined">
-                        <h3>
-                          {element.label}
-                          {element.isRequired ? (
-                            <span style={{ color: "red" }}> * </span>
-                          ) : null}
-                        </h3>
-                        <TextField fullWidth placeholder={element.label} />
-                      </Box>
-                    );
-                  case "select":
-                    return (
-                      <Box>
-                        <h3>
-                          {element.label}
-                          {element.isRequired ? (
-                            <span style={{ color: "red" }}> * </span>
-                          ) : null}
-                        </h3>
-                        <Select
-                          fullWidth
-                          label={element.label}
-                          placeholder="hello"
-                        >
-                          {element?.choice?.map((option) => (
-                            <MenuItem key={option.id} value={option.label}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </Box>
-                    );
-                  case "file-upload":
-                    return (
-                      <>
-                        <Box>
-                          <h3>
-                            {element.label}
+            {formData?.elements?.map((element) => (
+              <Box key={element.id}>
+                {(() => {
+                  switch (element?.type) {
+                    case "text":
+                      return (
+                        <Box key={element.id} m={1}>
+                          <Typography variant="h6">
+                            <strong>{element.label}</strong>
                             {element.isRequired ? (
-                              <span style={{ color: "red" }}> * </span>
+                              <span style={{ color: "red" }}> *</span>
                             ) : null}
-                          </h3>
-                          <Button color="inherit">
-                            <UploadFile />
-                          </Button>
+                          </Typography>
+                          <TextField fullWidth placeholder={element.label} />
                         </Box>
-                      </>
-                    );
-                  case "date":
-                    return (
-                      <>
-                        <Box key={element.id}>
-                          <h3>
-                            {element.label}
+                      );
+                    case "number":
+                      const numberValidationRegex = /^[0-9]*$/;
+
+                      const handleNumberChange = (event) => {
+                        const inputValue = event.target.value;
+                        if (numberValidationRegex.test(inputValue)) {
+                        }
+                      };
+
+                      return (
+                        <Box key={element.id} m={1}>
+                          <Typography variant="h6">
+                            <strong>{element.label}</strong>
                             {element.isRequired ? (
-                              <span style={{ color: "red" }}> * </span>
+                              <span style={{ color: "red" }}> *</span>
                             ) : null}
-                          </h3>
-                          <DateRange />
+                          </Typography>
+                          <TextField
+                            fullWidth
+                            type="number"
+                            placeholder={element.label}
+                            onChange={handleNumberChange}
+                            inputProps={{
+                              maxLength: 10,
+                            }}
+                          />
                         </Box>
-                      </>
-                    );
-                  case "radio":
-                    return (
-                      <Box fullWidth key={element.id}>
-                        <h3>
-                          {element.label}
-                          {element.isRequired ? (
-                            <span style={{ color: "red" }}> * </span>
-                          ) : null}
-                        </h3>
-                        <RadioGroup name={element.id}>
-                          {element?.choice?.map((option) => (
-                            <FormControlLabel
-                              key={option.id}
-                              value={option.label}
-                              control={<Radio />}
-                              label={option.label}
+                      );
+
+                    case "select":
+                      return (
+                        <Box key={element.id} m={1}>
+                          <Typography variant="h6">
+                            <strong>{element.label}</strong>
+                            {element.isRequired ? (
+                              <span style={{ color: "red" }}> *</span>
+                            ) : null}
+                          </Typography>
+                          <Select
+                            fullWidth
+                            label={element.label}
+                            placeholder="hello"
+                          >
+                            {element?.choice?.map((option) => (
+                              <MenuItem key={option.id} value={option.label}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </Box>
+                      );
+                    case "file-upload":
+                      return (
+                        <>
+                          <Box key={element.id} m={1}>
+                            <Typography variant="h6">
+                              <strong>
+                                Accepted .pdf, .doc, .docx, .xls, .xlsx
+                              </strong>
+                              {element.isRequired ? (
+                                <span style={{ color: "red" }}> *</span>
+                              ) : null}
+                            </Typography>
+                            <Input
+                              type="file"
+                              inputProps={{
+                                accept: ".pdf,.doc,.docx,.xls,.xlsx",
+                                onChange: (event) => {},
+                              }}
+                              style={{ display: "none" }}
+                              id={`file-upload-${element.id}`}
                             />
-                          ))}
-                        </RadioGroup>
-                      </Box>
-                    );
-                  default:
-                    return null;
-                }
-              })}
-            </form>
+                            <label htmlFor={`file-upload-${element.id}`}>
+                              <Button
+                                variant="contained"
+                                color="inherit"
+                                component="span"
+                                startIcon={<UploadFile />}
+                                style={{ textTransform: "none" }}
+                              >
+                                Upload File
+                              </Button>
+                            </label>
+                          </Box>
+                        </>
+                      );
+                    case "date":
+                      return (
+                        <>
+                          <Box key={element.id} m={1}>
+                            <Typography variant="h6">
+                              <strong>{element.label}</strong>
+                              {element.isRequired ? (
+                                <span style={{ color: "red" }}> *</span>
+                              ) : null}
+                            </Typography>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DemoContainer components={["DateField"]}>
+                                <DateField />
+                              </DemoContainer>
+                            </LocalizationProvider>
+                          </Box>
+                        </>
+                      );
+                    case "radio":
+                      return (
+                        <Box key={element.id} m={1}>
+                          <Typography variant="h6">
+                            <strong>{element.label}</strong>
+                            {element.isRequired ? (
+                              <span style={{ color: "red" }}> *</span>
+                            ) : null}
+                          </Typography>
+                          <RadioGroup name={element.id}>
+                            {element?.choice?.map((option) => (
+                              <FormControlLabel
+                                key={option.id}
+                                value={option.label}
+                                control={<Radio />}
+                                label={option.label}
+                              />
+                            ))}
+                          </RadioGroup>
+                        </Box>
+                      );
+                    default:
+                      return null;
+                  }
+                })()}
+              </Box>
+            ))}
+
             {console.log({ formData })}
           </DialogContent>
         ) : (

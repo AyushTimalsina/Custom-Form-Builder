@@ -11,6 +11,7 @@ const FileUploadField = ({ label, handleLabelChange, field }) => {
         style={{ marginBottom: "8px" }}
         onChange={handleLabelChange}
         value={label}
+        disabled
       />
     </>
   );
