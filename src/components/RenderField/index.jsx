@@ -19,7 +19,6 @@ const RenderFormField = ({ field, choiceData }) => {
   const handleLabelChange = (e) => {
     setLabel(field.id, e.target.value);
   };
-  console.log(field.id);
   const handleChoiceLabelChange = (choiceId, value) => {
     const updatedChoiceData = choiceData.map((option) =>
       option.id === choiceId ? { ...option, label: value } : option

@@ -80,7 +80,6 @@ const useFormFunctions = () => {
       version: "1.0.0",
       elements: updatedFormFields,
     };
-    console.log(updatedForm);
     const json = JSON.stringify(updatedForm);
     setFormJson(json);
   };

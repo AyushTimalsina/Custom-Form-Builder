@@ -1,6 +1,6 @@
 import React from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Grid, Button, Box } from "@mui/material";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Grid, Button, Box, Card, CardContent } from "@mui/material";
 import useCustomForm from "../../context/useCustomForm";
 import useFormFunctions from "../../hooks/useFormFunctions";
 import FormHeading from "./FormComponent/FormHeading";
@@ -8,7 +8,7 @@ import ComponentList from "./ComponentList";
 import FormField from "./FormComponent/FormField";
 
 const FormBuilder = () => {
-  const [{ formJson }, {}] = useCustomForm();
+  const [{ formJson, formFields }, {}] = useCustomForm();
   const { handleDragEnd, handleFormSubmit } = useFormFunctions();
 
   return (
@@ -33,7 +33,27 @@ const FormBuilder = () => {
                   }}
                 >
                   <FormHeading />
-                  <FormField />
+                  {formFields.map((field, index) => (
+                    <Draggable
+                      key={field.id}
+                      draggableId={field.id}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <Card style={{ marginBottom: "8px" }}>
+                            <CardContent>
+                              <FormField field={field} />
+                            </CardContent>
+                          </Card>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
                   {provided.placeholder}
                   {snapshot.isDraggingOver ? (
                     <Box
