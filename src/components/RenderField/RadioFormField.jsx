@@ -23,11 +23,11 @@ const RadioFormField = ({
         onChange={handleLabelChange}
       />
       <ul>
-        {choiceData.map((option) => (
+        {choiceData.map((option, index) => (
           <Box key={option?.id}>
             <li key={option?.id}>
               <TextField
-                placeholder="option 1"
+                placeholder={`Option ${index + 1}`}
                 variant="standard"
                 style={{ marginBottom: "8px" }}
                 value={option.label}

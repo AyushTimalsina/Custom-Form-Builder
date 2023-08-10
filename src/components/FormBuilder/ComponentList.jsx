@@ -7,7 +7,7 @@ const ComponentList = () => {
   return (
     <>
       <h3>Components</h3>
-      <Droppable droppableId="form-builder">
+      <Droppable droppableId="component-list">
         {(provided) => (
           <Box {...provided.droppableProps} ref={provided.innerRef}>
             {items.map((item, index) => (

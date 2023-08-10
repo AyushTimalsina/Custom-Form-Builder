@@ -16,17 +16,28 @@ const useFormFunctions = () => {
   // Drag and drop functionality
   const handleDragEnd = (result) => {
     if (!result.destination) return;
-    const reorderedItems = Array.from(items);
-    const [removed] = reorderedItems.splice(result.source.index, 1);
-    reorderedItems.splice(result.destination.index, 0, removed);
 
-    setItems(reorderedItems);
+    if (result.source.droppableId === "drop-zone") {
+      // Reorder items within the 'formFields' array
+      const reorderedFormFields = Array.from(formFields);
+      const [removed] = reorderedFormFields.splice(result.source.index, 1);
+      reorderedFormFields.splice(result.destination.index, 0, removed);
+      setFormFields(reorderedFormFields);
+    } else if (result.source.droppableId === "component-list") {
+      const draggedItem = items[result.source.index];
 
-    const draggedItem = items.find((item) => item.id === removed.id);
-    if (!formFields.some((field) => field.id === draggedItem.id)) {
-      setFormFields([...formFields, draggedItem]);
+      // Duplicate the dragged item to allow multiple instances
+      const newDraggedItem = {
+        ...draggedItem,
+        id: generateUniqueId(),
+      };
+
+      const updatedFormFields = Array.from(formFields);
+      updatedFormFields.splice(result.destination.index, 0, newDraggedItem);
+      setFormFields(updatedFormFields);
     }
   };
+
   // To update title and description of Form
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
